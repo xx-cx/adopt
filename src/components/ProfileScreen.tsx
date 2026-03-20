@@ -26,13 +26,7 @@ export default function ProfileScreen({ onNavigate, favoritesCount }: ProfileScr
           onClick={() => onNavigate('login')}
           className="w-full bg-[#e26136] hover:bg-[#e26136]/90 text-white font-bold py-4 rounded-xl transition-all active:scale-95 shadow-lg shadow-[#e26136]/20 mb-4"
         >
-          一键登录
-        </button>
-        <button 
-          onClick={() => onNavigate('register')}
-          className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-100 font-bold py-4 rounded-xl transition-all active:scale-95"
-        >
-          注册账号
+          登录 / 注册
         </button>
       </div>
     );

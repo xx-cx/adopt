@@ -15,13 +15,12 @@ import SettingsScreen from './components/SettingsScreen';
 import RescueCircleScreen from './components/RescueCircleScreen';
 import CreatePostScreen from './components/CreatePostScreen';
 import LoginScreen from './components/LoginScreen';
-import RegisterScreen from './components/RegisterScreen';
 import BottomNav from './components/BottomNav';
 import { Pet, Chat } from './types';
 import { PETS, MOCK_CHATS } from './constants';
 import { Heart, CheckCircle2, MessageSquare, Search } from 'lucide-react';
 
-type View = 'home' | 'favorites' | 'messages' | 'profile' | 'pet-detail' | 'apply' | 'add-pet' | 'chat' | 'settings' | 'rescue-circle' | 'create-post' | 'login' | 'register';
+type View = 'home' | 'favorites' | 'messages' | 'profile' | 'pet-detail' | 'apply' | 'add-pet' | 'chat' | 'settings' | 'rescue-circle' | 'create-post' | 'login';
 
 import { AppProvider } from './AppContext';
 
@@ -100,7 +99,7 @@ function AppContent() {
       setCurrentView('home');
     } else if (currentView === 'create-post') {
       setCurrentView('rescue-circle');
-    } else if (currentView === 'login' || currentView === 'register') {
+    } else if (currentView === 'login') {
       setCurrentView('profile');
     } else {
       setCurrentView('home');
@@ -279,19 +278,9 @@ function AppContent() {
         return <LoginScreen 
           onBack={handleBack} 
           onSuccess={() => {
-            showToast('登录成功！');
+            showToast('登录记录已更新！');
             setCurrentView('profile');
           }} 
-          onNavigateToRegister={() => setCurrentView('register')} 
-        />;
-      case 'register':
-        return <RegisterScreen 
-          onBack={handleBack} 
-          onSuccess={() => {
-            showToast('注册成功！');
-            setCurrentView('profile');
-          }} 
-          onNavigateToLogin={() => setCurrentView('login')} 
         />;
       default:
         return <HomeScreen 
