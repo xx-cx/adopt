@@ -15,12 +15,13 @@ import SettingsScreen from './components/SettingsScreen';
 import RescueCircleScreen from './components/RescueCircleScreen';
 import CreatePostScreen from './components/CreatePostScreen';
 import LoginScreen from './components/LoginScreen';
+import AdminDashboard from './components/AdminDashboard';
 import BottomNav from './components/BottomNav';
 import { Pet, Chat } from './types';
 import { PETS, MOCK_CHATS } from './constants';
 import { Heart, CheckCircle2, MessageSquare, Search } from 'lucide-react';
 
-type View = 'home' | 'favorites' | 'messages' | 'profile' | 'pet-detail' | 'apply' | 'add-pet' | 'chat' | 'settings' | 'rescue-circle' | 'create-post' | 'login';
+type View = 'home' | 'favorites' | 'messages' | 'profile' | 'pet-detail' | 'apply' | 'add-pet' | 'chat' | 'settings' | 'rescue-circle' | 'create-post' | 'login' | 'admin';
 
 import { AppProvider } from './AppContext';
 
@@ -100,6 +101,8 @@ function AppContent() {
     } else if (currentView === 'create-post') {
       setCurrentView('rescue-circle');
     } else if (currentView === 'login') {
+      setCurrentView('profile');
+    } else if (currentView === 'admin') {
       setCurrentView('profile');
     } else {
       setCurrentView('home');
@@ -294,9 +297,27 @@ function AppContent() {
 
   const showBottomNav = ['home', 'favorites', 'messages', 'profile'].includes(currentView);
 
+  if (currentView === 'admin') {
+    return (
+      <div className="min-h-screen bg-slate-100 dark:bg-slate-950 font-sans">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key="admin-view"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <AdminDashboard onBack={handleBack} />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 font-sans">
-      <div className="max-w-md mx-auto bg-white dark:bg-slate-900 min-h-screen relative shadow-2xl overflow-hidden">
+    <div className="min-h-screen flex justify-center bg-slate-100 dark:bg-slate-950 font-sans">
+      <div className="w-full max-w-md bg-white dark:bg-slate-900 min-h-screen relative shadow-2xl overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentView + (selectedPet?.id || '')}

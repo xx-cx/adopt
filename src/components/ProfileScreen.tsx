@@ -10,7 +10,7 @@ interface ProfileScreenProps {
 }
 
 export default function ProfileScreen({ onNavigate, favoritesCount }: ProfileScreenProps) {
-  const { user, t, isLoggedIn } = useAppContext();
+  const { user, t, isLoggedIn, isAdmin } = useAppContext();
   const applications = PETS.filter(p => p.status);
 
   if (!isLoggedIn) {
@@ -92,6 +92,17 @@ export default function ProfileScreen({ onNavigate, favoritesCount }: ProfileScr
           <span className="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-wider font-bold">{t('guides')}</span>
         </div>
       </div>
+
+      {isAdmin && (
+        <div className="px-6 mb-8 mt-[-10px]">
+          <button 
+            onClick={() => onNavigate('admin')}
+            className="w-full bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-white text-white dark:text-slate-900 font-bold py-4 rounded-xl transition-all active:scale-95 shadow-lg shadow-black/10 flex items-center justify-center gap-2"
+          >
+            <Settings size={20} /> 进入超级管理后台
+          </button>
+        </div>
+      )}
 
       {/* Main Content Sections */}
       <main className="px-6 flex-1 space-y-8">

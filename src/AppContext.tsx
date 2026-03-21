@@ -13,6 +13,7 @@ interface AppContextType {
   setTheme: (theme: ThemeMode) => void;
   isLoggedIn: boolean;
   setIsLoggedIn: (status: boolean) => void;
+  isAdmin: boolean;
   t: (key: keyof typeof translations['zh']) => string;
 }
 
@@ -32,14 +33,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return (saved as ThemeMode) || MOCK_USER.settings.theme;
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    const fetchProfile = async (userId: string) => {
+      const { data } = await supabase.from('profiles').select('is_admin').eq('id', userId).single();
+      if (data) {
+        setIsAdmin(!!data.is_admin);
+      }
+    };
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsLoggedIn(!!session);
+      if (session?.user) {
+        fetchProfile(session.user.id);
+      }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setIsLoggedIn(!!session);
+      if (session?.user) {
+        fetchProfile(session.user.id);
+      } else {
+        setIsAdmin(false);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -82,7 +99,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   return (
-    <AppContext.Provider value={{ user, setUser, language, setLanguage, theme, setTheme, isLoggedIn, setIsLoggedIn, t }}>
+    <AppContext.Provider value={{ user, setUser, language, setLanguage, theme, setTheme, isLoggedIn, setIsLoggedIn, isAdmin, t }}>
       {children}
     </AppContext.Provider>
   );

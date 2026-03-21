@@ -11,6 +11,7 @@ CREATE TABLE public.profiles (
   full_name text,
   avatar_url text,
   profession text,
+  is_admin boolean DEFAULT false,
   created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
